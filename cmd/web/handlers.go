@@ -19,15 +19,15 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// log.Print(err.Error()) old way to log errors
 		// Using the logger from the application struct as DI
-		app.logger.Error("error parsing template", "error", err, "method", r.Method, "uri", r.URL.RequestURI())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, r, err)
+		// http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
 		// log.Print(err.Error())
-		app.logger.Error(err.Error(), "method", r.Method, "uri", r.URL.RequestURI())
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		app.serverError(w, r, err)
+		// http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 	}
 }
 
