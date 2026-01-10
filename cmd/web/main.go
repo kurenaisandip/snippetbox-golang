@@ -14,6 +14,9 @@ func main() {
 	flag.Parse()
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
+	// logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+	// 	AddSource: true,
+	// })) // this will add the file and line number of the log call
 
 	mux := http.NewServeMux()
 
@@ -27,7 +30,8 @@ func main() {
 	mux.HandleFunc("POST /snippet/create", snippetCreatePost)
 
 	// log.Printf("starting server on %s", *addr)
-	logger.Info("starting server", "addr", *addr)
+	// logger.Info("starting server", "addr", *addr)
+	logger.Info("starting server", slog.Any("addr", ":4000"))
 
 	err := http.ListenAndServe(*addr, mux)
 	// err := http.ListenAndServe(":4000", mux)
